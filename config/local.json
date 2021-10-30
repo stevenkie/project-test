@@ -1,0 +1,17 @@
+{
+    "db": {
+        "host" : "localhost",
+        "port" : "5456",
+        "user" : "postgres",
+        "pass" : "abcde",
+        "name" : "user_db",
+        "sslmode": "disable"
+    },
+    "redis": {
+        "host": "localhost:6379"
+    },
+    "server": {
+        "port" : "3000",
+        "secret": "secret_sample"
+    }
+}

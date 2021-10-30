@@ -10,6 +10,7 @@ type userPostgresRepo struct {
 	db *sqlx.DB
 }
 
+// InitUserPGRepo initialize new repository for userPG
 func InitUserPGRepo(db *sqlx.DB) userPGRepo.Repository {
 	return &userPostgresRepo{
 		db: db,

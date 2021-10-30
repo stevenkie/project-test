@@ -1,4 +1,4 @@
-module project-test
+module github.com/stevenkie/project-test
 
 go 1.17
 

@@ -1,6 +1,8 @@
 package redis
 
-import "github.com/pkg/errors"
+import (
+	"github.com/pkg/errors"
+)
 
 //SetUserToken to redis, this cache is used for token auth
 func (sr *sessionRedisRepo) SetUserToken(userID string, token string) error {

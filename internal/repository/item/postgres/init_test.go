@@ -4,17 +4,17 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	userPGRepo "github.com/stevenkie/project-test/internal/repository/userdb"
+	itemPGRepo "github.com/stevenkie/project-test/internal/repository/item"
 )
 
-func TestInitUserPGRepo(t *testing.T) {
+func TestInitItemPGRepo(t *testing.T) {
 	type args struct {
 		db *sqlx.DB
 	}
 	tests := []struct {
 		name string
 		args args
-		want userPGRepo.Repository
+		want itemPGRepo.Repository
 	}{
 		{
 			name: "success",
@@ -22,7 +22,7 @@ func TestInitUserPGRepo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			InitUserPGRepo(tt.args.db)
+			InitItemPGRepo(tt.args.db)
 		})
 	}
 }

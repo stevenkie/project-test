@@ -46,8 +46,8 @@ func main() {
 	userPGRepo := userRepoPG.InitUserPGRepo(db)
 	itemPGREPo := itemRepoPG.InitItemPGRepo(db)
 	userUsecase := userUsecase.InitUserUsecase(cfg, userPGRepo, sessionRedisRepo)
-	cartUsecae := cartUsecase.InitCartUsecase(itemPGREPo, cartRedisRepo)
-	cartHttpDelivery := cartDelivery.InitCartHttpDelivery(cartUsecae)
+	cartUsecase := cartUsecase.InitCartUsecase(itemPGREPo, cartRedisRepo)
+	cartHttpDelivery := cartDelivery.InitCartHttpDelivery(cartUsecase, userUsecase)
 	userHttpDelivery := userDelivery.InitUserHttpDelivery(userUsecase)
 
 	// Init routes
@@ -62,7 +62,9 @@ func main() {
 	// cart
 	r.HandleFunc("/cart/{id}", cartHttpDelivery.GetCartByID).Methods(http.MethodGet)
 	r.HandleFunc("/cart", cartHttpDelivery.AddCart).Methods(http.MethodPost)
+	r.HandleFunc("/cart/{id}", cartHttpDelivery.EmptyCartById).Methods(http.MethodDelete)
 	r.HandleFunc("/checkout", cartHttpDelivery.CheckoutCarts).Methods(http.MethodPost)
+
 	// Start server
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

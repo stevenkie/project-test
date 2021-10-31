@@ -30,3 +30,12 @@ func (cu *cartUC) GetCart(userID string) (cartModel.Cart, error) {
 	}
 	return cart, nil
 }
+
+//EmptyCart add empty cart
+func (cu *cartUC) EmptyCart(userID string) error {
+	err := cu.cartRedisRepo.EmptyCart(userID)
+	if err != nil {
+		return errors.WithStack(err)
+	}
+	return nil
+}

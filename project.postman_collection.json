@@ -60,13 +60,19 @@
 			"response": []
 		},
 		{
-			"name": "InsertUser",
+			"name": "checkout",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "au",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcmVhdGVkX2F0IjoiMjAyMS0xMC0zMVQxMjoyMjowMy4wMDYwODRaIiwicmFuZG9tIjo4Njc0NjY1MjIzMDgyMTUzNTUxfQ.ABC7cuujWvdiQGV2pm6Xl4mqmSHIHFIPxbOEpWL9kUM",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"user_id\": \"tester\",\n    \"email\": \"test@gmail.com\",\n    \"password\": \"testpassword\",\n    \"address\": \"aaa bbb\"\n}",
+					"raw": "{\n    \"id\":\"1\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -74,13 +80,13 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:3000/user",
+					"raw": "localhost:3000/checkout",
 					"host": [
 						"localhost"
 					],
 					"port": "3000",
 					"path": [
-						"user"
+						"checkout"
 					]
 				}
 			},
@@ -100,6 +106,25 @@
 					"path": [
 						"user",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Cart",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/cart/tester",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cart",
+						"tester"
 					]
 				}
 			},
@@ -147,6 +172,52 @@
 					"path": [
 						"user",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Empty Cart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/user/1",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"user",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Cart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"item_id\": \"1\",\n    \"quantity\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/cart",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"cart"
 					]
 				}
 			},

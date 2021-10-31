@@ -24,6 +24,12 @@ func writeSuccessResponse(w http.ResponseWriter, data interface{}) {
 }
 
 func (hd *HttpDelivery) GetCartByID(w http.ResponseWriter, r *http.Request) {
+	authorizationHeader := r.Header.Get(httpModel.HeaderAuth)
+	validSession := hd.userUC.ValidateSession(authorizationHeader)
+	if !validSession {
+		writeErrorResponse(w, http.StatusForbidden, errors.New(ErrorForbidden))
+		return
+	}
 	vars := mux.Vars(r)
 	userID := vars["id"]
 	if userID == "" {
@@ -40,12 +46,39 @@ func (hd *HttpDelivery) GetCartByID(w http.ResponseWriter, r *http.Request) {
 
 func (hd *HttpDelivery) AddCart(w http.ResponseWriter, r *http.Request) {
 	var p cartModel.AddItemToCart
+	authorizationHeader := r.Header.Get(httpModel.HeaderAuth)
+	validSession := hd.userUC.ValidateSession(authorizationHeader)
+	if !validSession {
+		writeErrorResponse(w, http.StatusForbidden, errors.New(ErrorForbidden))
+		return
+	}
 	err := json.NewDecoder(r.Body).Decode(&p)
 	if err != nil {
 		writeErrorResponse(w, http.StatusBadRequest, err)
 		return
 	}
 	err = hd.cartUC.AddItemToCart(p)
+	if err != nil {
+		writeErrorResponse(w, http.StatusInternalServerError, err)
+		return
+	}
+	writeSuccessResponse(w, httpModel.GeneralSuccessMessage)
+}
+
+func (hd *HttpDelivery) EmptyCartById(w http.ResponseWriter, r *http.Request) {
+	authorizationHeader := r.Header.Get(httpModel.HeaderAuth)
+	validSession := hd.userUC.ValidateSession(authorizationHeader)
+	if !validSession {
+		writeErrorResponse(w, http.StatusForbidden, errors.New(ErrorForbidden))
+		return
+	}
+	vars := mux.Vars(r)
+	userID := vars["id"]
+	if userID == "" {
+		writeErrorResponse(w, http.StatusBadRequest, errors.New(ErrorUserIDMustBeProvided))
+		return
+	}
+	err := hd.cartUC.EmptyCart(userID)
 	if err != nil {
 		writeErrorResponse(w, http.StatusInternalServerError, err)
 		return

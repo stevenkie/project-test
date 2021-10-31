@@ -17,4 +17,6 @@ type Usecase interface {
 	DeleteUser(userID string) error
 	//Login login process, check user from db, and save token
 	Login(data loginModel.Login) (string, error)
+	// ValidateSession for validation session
+	ValidateSession(token string) (valid bool)
 }

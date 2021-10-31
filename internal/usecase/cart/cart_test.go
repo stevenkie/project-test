@@ -157,3 +157,58 @@ func Test_cartUC_AddItemToCart(t *testing.T) {
 		})
 	}
 }
+
+func Test_cartUC_EmptyCart(t *testing.T) {
+	mockCartRepo := &cartRepo.RepositoryMock{
+		EmptyCartFunc: func(userID string) error {
+			if userID == "test" {
+				return errors.New("test")
+			}
+			return nil
+		},
+	}
+
+	type fields struct {
+		itemPGRepo    itemRepo.Repository
+		cartRedisRepo cartRepo.Repository
+	}
+	type args struct {
+		userID string
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "positve test case",
+			fields: fields{
+				cartRedisRepo: mockCartRepo,
+			},
+			args:    args{},
+			wantErr: false,
+		},
+		{
+			name: "negative test case",
+			fields: fields{
+				cartRedisRepo: mockCartRepo,
+			},
+			args: args{
+				userID: "test",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			cu := &cartUC{
+				itemPGRepo:    tt.fields.itemPGRepo,
+				cartRedisRepo: tt.fields.cartRedisRepo,
+			}
+			if err := cu.EmptyCart(tt.args.userID); (err != nil) != tt.wantErr {
+				t.Errorf("cartUC.EmptyCart() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

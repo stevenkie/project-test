@@ -12,7 +12,7 @@ type userUC struct {
 	sessionRedisRepo sessionRepo.Repository
 }
 
-// NewUserUsecase for
+// InitUserUsecase for user login
 func InitUserUsecase(cfg *config.Config, db userRepo.Repository, redis sessionRepo.Repository) Usecase {
 	return &userUC{
 		config:           cfg,

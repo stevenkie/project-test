@@ -9,14 +9,14 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS items (
     id BIGSERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    quantity INTEGER DEFAULT 0
-    price INTEGER NOT NULL,
+    quantity INTEGER DEFAULT 0,
+    price INTEGER NOT NULL
 );
 
 -- Seeding items
 INSERT INTO items(name, quantity, price)
-VALUES ('Iphone 12 Pro', 12500000, 2);
+VALUES ('Iphone 12 Pro', 2, 12500000);
 INSERT INTO items(name, quantity, price)
-VALUES ('Samsung Max Pro', 'MacBook Pro', 1, 2100000);
-INSERT INTO items(sku, name, price, qty)
-VALUES ('A304SD', 'Screen Guard 5.5"', 50000, 1);
+VALUES ('Samsung Max Pro', 1, 2100000);
+INSERT INTO items(name, quantity, price)
+VALUES ('Screen Guard 5.5"', 1, 50000);

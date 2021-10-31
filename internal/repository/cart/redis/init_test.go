@@ -7,7 +7,7 @@ import (
 	cartRDRepo "github.com/stevenkie/project-test/internal/repository/cart"
 )
 
-func TestInitSessionRedisRepo(t *testing.T) {
+func TestInitCartRedisRepo(t *testing.T) {
 	type args struct {
 		redis *redis.Client
 	}
@@ -22,7 +22,7 @@ func TestInitSessionRedisRepo(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			InitSessionRedisRepo(tt.args.redis)
+			InitCartRedisRepo(tt.args.redis)
 		})
 	}
 }

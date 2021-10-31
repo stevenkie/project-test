@@ -13,9 +13,14 @@ import (
 	_ "github.com/lib/pq" //using postgres
 	"github.com/stevenkie/project-test/config"
 
+	cartDelivery "github.com/stevenkie/project-test/internal/delivery/http/cart"
 	userDelivery "github.com/stevenkie/project-test/internal/delivery/http/user"
+
+	cartRedisR "github.com/stevenkie/project-test/internal/repository/cart/redis"
+	itemRepoPG "github.com/stevenkie/project-test/internal/repository/item/postgres"
 	sessionRedisR "github.com/stevenkie/project-test/internal/repository/session/redis"
 	userRepoPG "github.com/stevenkie/project-test/internal/repository/userdb/postgres"
+	cartUsecase "github.com/stevenkie/project-test/internal/usecase/cart"
 	userUsecase "github.com/stevenkie/project-test/internal/usecase/user"
 )
 
@@ -37,8 +42,12 @@ func main() {
 
 	// Init layers
 	sessionRedisRepo := sessionRedisR.InitSessionRedisRepo(redis)
+	cartRedisRepo := cartRedisR.InitCartRedisRepo(redis)
 	userPGRepo := userRepoPG.InitUserPGRepo(db)
+	itemPGREPo := itemRepoPG.InitItemPGRepo(db)
 	userUsecase := userUsecase.InitUserUsecase(cfg, userPGRepo, sessionRedisRepo)
+	cartUsecae := cartUsecase.InitCartUsecase(itemPGREPo, cartRedisRepo)
+	cartHttpDelivery := cartDelivery.InitCartHttpDelivery(cartUsecae)
 	userHttpDelivery := userDelivery.InitUserHttpDelivery(userUsecase)
 
 	// Init routes
@@ -50,6 +59,10 @@ func main() {
 	r.HandleFunc("/user/{id}", userHttpDelivery.DeleteUser).Methods(http.MethodDelete)
 	r.HandleFunc("/login", userHttpDelivery.Login).Methods(http.MethodPost)
 
+	// cart
+	r.HandleFunc("/cart/{id}", cartHttpDelivery.GetCartByID).Methods(http.MethodGet)
+	r.HandleFunc("/cart", cartHttpDelivery.AddCart).Methods(http.MethodPost)
+	r.HandleFunc("/checkout", cartHttpDelivery.CheckoutCarts).Methods(http.MethodPost)
 	// Start server
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},

@@ -1,5 +1,17 @@
 package cart
 
+import "github.com/go-playground/validator"
+
+var validate *validator.Validate
+
+type Identifier struct {
+	ID string `json:"id" validate:"required"`
+}
+
+func (p Identifier) Validate() error {
+	return validate.Struct(p)
+}
+
 type CartItem struct {
 	ItemID   string
 	Quantity int32
@@ -10,9 +22,9 @@ type Cart struct {
 }
 
 type AddItemToCart struct {
-	UserID   string
-	ItemID   string
-	Quantity int32
+	UserID   string `json:"id"`
+	ItemID   string `json:"item_id"`
+	Quantity int32  `json:"quantity"`
 }
 
 func (p Cart) GetCartItemIDs() []string {
@@ -56,4 +68,13 @@ func (p Cart) AddToCart(input AddItemToCart) Cart {
 
 func removeCartItem(slice []CartItem, s int) []CartItem {
 	return append(slice[:s], slice[s+1:]...)
+}
+
+func (p Cart) GetQtyMap() map[string]int32 {
+	result := make(map[string]int32)
+	for _, cI := range p.Items {
+		result[cI.ItemID] += cI.Quantity
+	}
+
+	return result
 }

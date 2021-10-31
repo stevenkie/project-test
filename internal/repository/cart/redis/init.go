@@ -9,7 +9,7 @@ type cartRedisRepo struct {
 	redis *redis.Client
 }
 
-func InitSessionRedisRepo(redis *redis.Client) cartRDRepo.Repository {
+func InitCartRedisRepo(redis *redis.Client) cartRDRepo.Repository {
 	return &cartRedisRepo{
 		redis: redis,
 	}

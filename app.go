@@ -59,7 +59,7 @@ func main() {
 	r.HandleFunc("/user/{id}", userHttpDelivery.DeleteUser).Methods(http.MethodDelete)
 	r.HandleFunc("/login", userHttpDelivery.Login).Methods(http.MethodPost)
 
-	// cart
+	// cart new test
 	r.HandleFunc("/cart/{id}", cartHttpDelivery.GetCartByID).Methods(http.MethodGet)
 	r.HandleFunc("/cart", cartHttpDelivery.AddCart).Methods(http.MethodPost)
 	r.HandleFunc("/cart/{id}", cartHttpDelivery.EmptyCartById).Methods(http.MethodDelete)
